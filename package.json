@@ -1,0 +1,19 @@
+{
+  "name": "ukanren",
+  "version": "0.0.1",
+  "description": "µKanren in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "logic",
+    "programming",
+    "kanren",
+    "minikanren",
+    "µkanren",
+    "ukanren"
+  ],
+  "author": "Zach Carter",
+  "license": "BSD-2-Clause"
+}
