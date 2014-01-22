@@ -76,7 +76,6 @@ function callFresh(fn) {
   };
 }
 
-
 function disj(goal1, goal2) {
   return function goal(state) {
     return mplus(goal1(state), goal2(state));
@@ -121,10 +120,58 @@ function unifyObject(u, v, s) {
   }, s);
 }
 
+// Extra goal constructors
+// -----------------------
+
+function fail() {
+  return function goal() { return mzero(); };
+}
+
+function succeed() {
+  return function goal(state) { return unit(state); };
+}
+
+// turns an array of goals into their conjunction
+function and(list) {
+  if (list.length === 1) return list[0];
+
+  return list.reduce(function(prev, val) {
+    return conj(prev, val);
+  });
+}
+
+function conde() {
+  var args = [].slice.call(arguments, 0);
+  if (args.length === 1) return and(args[0]);
+
+  return args.reduce(function(prev, val, i) {
+    return disj(
+      i > 1 ? prev : and(prev),
+      and(val)
+    );
+  });
+}
+
+function membero(x, list) {
+  if (list.length === 1) return eq(x, list[0]);
+
+  return list.reduce(function(prev, val, i) {
+    return disj(
+      i > 1 ? prev : eq(x, prev),
+      eq(x, val)
+    );
+  });
+}
+
 module.exports = {
   eq: eq,
   callFresh: callFresh,
   conj: conj,
   disj: disj,
-  emptyState: emptyState
+  emptyState: emptyState,
+
+  conde: conde,
+  membero: membero,
+  succeed: succeed,
+  fail: fail
 };

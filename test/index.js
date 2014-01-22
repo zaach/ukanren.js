@@ -59,3 +59,62 @@ test('objects', function(t) {
 
   t.end();
 });
+
+test('membero', function(t) {
+
+  var goal1 = u.callFresh(function(q) {
+    return u.conj(
+      u.disj(u.eq(q, 1), u.eq(q, 2)),
+      u.disj(u.eq(q, 2), u.eq(q, 3))
+    );
+  })(u.emptyState());
+
+  t.equivalent(goal1, [[{ '0': 2 }, 1 ]],
+    'basic intersection');
+
+  var goal2 = u.callFresh(function(q) { return u.membero(q, [1, 2, 3]); })(u.emptyState());
+
+  t.equivalent(goal2, [[{ '0': 1 }, 1 ], [{ '0': 2 }, 1 ], [{ '0': 3 }, 1 ]],
+    'membero');
+
+  var goal3 = u.callFresh(function(q) {
+    return u.conj(
+      u.membero(q, [1, 2, 3]),
+      u.membero(q, [3, 4, 5])
+    );
+  })(u.emptyState());
+
+  t.equivalent(goal3, [[{ '0': 3 }, 1 ]],
+    'intersection of membero');
+
+  var goal4 = u.callFresh(function(q) { return u.membero(7, [1, q, 3]); })(u.emptyState());
+
+  t.equivalent(goal4, [[{ '0': 7 }, 1 ]],
+    'membero with lvar in list');
+
+  t.end();
+});
+
+test('conde', function(t) {
+
+  var goal1 = u.callFresh(function(q) {
+    return u.conde(
+      [ u.eq(q, 1) ],
+      [ u.eq(q, 2) ]
+    );
+  })(u.emptyState());
+
+  t.equivalent(goal1, [[{ '0': 1 }, 1 ], [{ '0': 2 }, 1 ]],
+    'conde disjunction');
+
+  var goal2 = u.callFresh(function(q) {
+    return u.conde(
+      [ u.eq(q, 1), u.eq(q, 2) ]
+    );
+  })(u.emptyState());
+
+  t.equivalent(goal2, [],
+    'conde conjuction');
+
+  t.end();
+});

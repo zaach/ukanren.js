@@ -4,7 +4,7 @@
   "description": "µKanren in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "tap ./test"
+    "test": "tap ./test -d"
   },
   "keywords": [
     "logic",
