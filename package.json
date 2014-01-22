@@ -4,7 +4,7 @@
   "description": "µKanren in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "tap ./test"
   },
   "keywords": [
     "logic",
@@ -15,5 +15,8 @@
     "ukanren"
   ],
   "author": "Zach Carter",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "tap": "~0.4.8"
+  }
 }
