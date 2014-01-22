@@ -58,6 +58,7 @@ function unify(u, v, s) {
     isLVar(u) ? extendSubs(u, v, s) :
     isLVar(v) ? extendSubs(v, u, s) :
     isArray(u) && isArray(v) ? unifyArray(u, v, s) :
+    isObject(u) && isObject(v) ? unifyObject(u, v, s) :
     equiv(u, v) ? s :
     false
   );
@@ -107,6 +108,16 @@ function isArray(val) {
 function unifyArray(u, v, s) {
   return u.reduce(function(subs, val, i) {
     return subs && unify(val, v[i], subs);
+  }, s);
+}
+
+function isObject(val) {
+  return val !== null && typeof val === 'object';
+}
+
+function unifyObject(u, v, s) {
+  return Object.keys(u).reduce(function(subs, key) {
+    return subs && unify(u[key], v[key], subs);
   }, s);
 }
 

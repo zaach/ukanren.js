@@ -44,3 +44,18 @@ test('arrays', function(t) {
 
   t.end();
 });
+
+test('objects', function(t) {
+
+  var goal1 = u.callFresh(function(q) { return u.eq({ foo: 1, bar: 2 }, q); })(u.emptyState());
+
+  t.equivalent(goal1, [[{ '0': { foo: 1, bar: 2 }}, 1 ]],
+    'unification works with an object value');
+
+  var goal2 = u.callFresh(function(q) { return u.eq({ foo: q, bar: 2 }, { foo: 9, bar: 2 }); })(u.emptyState());
+
+  t.equivalent(goal2, [[{ '0': 9 }, 1 ]],
+    'unification works with lvar nested in an object');
+
+  t.end();
+});
